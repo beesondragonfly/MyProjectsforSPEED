@@ -1,0 +1,19 @@
+"""Module for vapor pressure deficits"""
+from math import exp
+
+# Defined function to obtain Saturated Vapor Pressures and deficits relative to gathered temperatures
+def getSatVaporPressure(T):
+    if T <= 0.0:
+        esat_i = 0.6108*exp(21.875*T/(T+265.50))  #esat ice
+        return esat_i
+    else:
+        esat_w = 0.6108*exp(17.27*T/(237.30+T))  #esat h2o
+        return esat_w
+
+def getVaporPressure(RH,T):                       #RH as decimal
+    e_a = RH/100.0 * getSatVaporPressure(T)
+    return e_a
+
+def getVPD(T,RH):
+    e_deficit = getSatVaporPressure(T) - getVaporPressure(RH,T)
+    return e_deficit
